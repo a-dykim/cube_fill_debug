@@ -1,0 +1,60 @@
+75% overlap 1:6
+
+lengthed_center_trees75_1_6= {'1011_1008_0': ['1052_1003_0'],
+ '1400_877_0': ['1257_877_0', '460_870_0'],
+ '1414_889_0': ['406_888_1'],
+ '1563_989_0': ['2323_987_0'],
+ '1587_1016_0': ['851_1001_0', '793_1009_0', '1465_1011_0'],
+ '1602_1000_0': ['451_999_0'],
+ '1703_838_0': ['1471_838_0'],
+ '1897_1004_0': ['851_1001_0'],
+ '1969_1016_0': ['851_1001_0', '793_1009_0', '1465_1011_0'],
+ '2226_1042_0': ['1992_1042_0'],
+ '2496_824_0': ['1839_823_0', '565_806_1', '1296_823_0', '416_791_0'],
+ '2778_881_0': ['600_873_0'],
+ '407_868_1': ['576_868_0'],
+ '410_864_0': ['887_861_0', '3178_864_0'],
+ '427_1004_0': ['489_999_0'],
+ '436_1021_0': ['737_1020_0'],
+ '528_866_0': ['985_866_0'],
+ '630_1002_0': ['1288_1004_0', '960_1004_0'],
+ '643_870_0': ['1257_877_0', '460_870_0'],
+ '648_996_0': ['851_1001_0'],
+ '651_877_1': ['867_876_0'],
+ '653_1011_0': ['1465_1011_0'],
+ '717_1067_0': ['1178_1063_0'],
+ '746_1018_0': ['1443_1013_0'],
+ '764_979_0': ['734_979_0'],
+ '811_1001_0': ['1182_1001_0'],
+ '935_1000_0': ['860_1000_0']}
+
+
+
+### Plotting Python###
+search = lengthed_center_trees75_1_6
+k = np.random.randint(len(search))
+skey = search.keys()
+
+ref_tree = old_center30g_trees75_1_6[skey[k]]
+print ()
+#ref_tree = old_center30g_trees75_1_6['1703_838_0']
+#skey[k] = '1703_838_0'
+#cand_ids = ['1471_838_0']
+cand_ids =search[skey[k]]
+
+for i in range(len(cand_ids)):
+    new_tree = new_center30g_trees75_1_2[cand_ids[i]]
+    r1 = plt.contour(ref_tree.root_node.mask, colors='red', extent=gt.ordering_corners(ref_tree.root_node.corners_original), label=skey[k])
+    r2 = plt.contour(new_tree.root_node.mask, colors='green', extent=gt.ordering_corners(new_tree.root_node.corners_original), label=cand_ids[i])
+    plt.title('Root Node Comparison : Old Key:'+str(skey[k])+', New Key:'+str(cand_ids[i]))
+    #plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+    #plt.legend([r1, r2],["b", "a"])
+    
+    plt.figure()
+
+    match_comp = compute_matchability(ref_tree, new_tree)
+    plt.plot(new_tree.getTreeVelocityRange(),match_comp, 'o-')
+    plt.title('Overlapping Fraction Comparison')
+    plt.ylabel('Overlapping Fraction')
+    plt.xlabel('V-channel') 
+    plt.figure()
